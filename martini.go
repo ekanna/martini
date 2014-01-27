@@ -23,6 +23,8 @@ import (
 	"net/http"
 	"os"
 	"reflect"
+	"time"
+	"fmt"
 )
 
 // Martini represents the top level web application. inject.Injector methods can be invoked to map services on a global level.
@@ -35,7 +37,8 @@ type Martini struct {
 
 // New creates a bare bones Martini instance. Use this method if you want to have full control over the middleware that is used.
 func New() *Martini {
-	m := &Martini{inject.New(), []Handler{}, func() {}, log.New(os.Stdout, "[martini] ", 0)}
+	prefix := "[martini " + fmt.Sprint(time.Now()) + "] "
+	m := &Martini{inject.New(), []Handler{}, func() {}, log.New(os.Stdout, prefix, 0)}
 	m.Map(m.logger)
 	m.Map(defaultReturnHandler())
 	return m
